@@ -1,13 +1,79 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Redirecting to HypeCheckAI...</title>
-    <meta http-equiv="refresh" content="0; URL=https://hype-check.onrender.com">
-    <link rel="canonical" href="https://hype-check.onrender.com">
-  </head>
-  <body style="text-align: center; font-family: sans-serif; padding-top: 50px;">
-    <h1>Redirecting to HypeCheckAI Oracle...</h1>
-    <p>If you are not redirected, <a href="https://hype-check.onrender.com">click here</a>.</p>
-  </body>
-</html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HypeCheck AI | Solana Sentiment Oracle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #0f172a; color: #f8fafc; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .sol-glow { box-shadow: 0 0 20px rgba(20, 241, 149, 0.2); }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4">
+
+    <div class="glass p-6 rounded-2xl w-full max-auto mb-6 text-center sol-glow">
+        <h1 class="text-3xl font-bold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent mb-2">
+            HypeCheck AI
+        </h1>
+        <p class="text-gray-400 text-sm mb-4">Real-time Solana Sentiment Machine</p>
+        
+        <div class="flex justify-center items-center space-x-4 bg-black/30 p-3 rounded-xl">
+            <span class="text-green-400 font-mono">SOL/USD</span>
+            <span id="price" class="text-xl font-bold">Loading...</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+        
+        <div class="glass p-6 rounded-2xl flex flex-col items-center justify-center">
+            <h2 class="text-lg font-semibold mb-4 text-gray-300">Market Sentiment</h2>
+            <div id="score-circle" class="w-32 h-32 rounded-full border-8 border-green-500 flex items-center justify-center text-4xl font-bold mb-4">
+                85
+            </div>
+            <p id="verdict" class="text-green-400 font-bold tracking-widest uppercase">Strong Bullish</p>
+        </div>
+
+        <div class="glass p-6 rounded-2xl text-center">
+            <h2 class="text-lg font-semibold mb-4 text-gray-300">Support the Machine</h2>
+            <p class="text-xs text-gray-500 mb-4">Machine-to-Machine Alpha is costly to run.</p>
+            
+            <button onclick="copyWallet()" class="w-full py-3 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl font-bold hover:opacity-80 transition active:scale-95">
+                Copy Tip Address (SOL)
+            </button>
+            <p id="copied" class="text-xs text-green-400 mt-2 opacity-0 transition-opacity">Address Copied!</p>
+        </div>
+    </div>
+
+    <div class="mt-8 text-center w-full max-w-xl">
+        <p class="text-xs text-gray-600 mb-2">Powered by Jupiter Liquidity Engine</p>
+        <a href="https://jup.ag/swap/USDC-SOL" target="_blank" class="text-blue-400 hover:underline text-sm font-medium">
+            Trade with HypeCheck Sentiment →
+        </a>
+    </div>
+
+    <script>
+        // Copy Wallet Logic
+        function copyWallet() {
+            const wallet ="59N8hT6FsrKdmrJPE9B9aWZXUaWM4AS5jxH9JBxNZyWD" ; // PASTE YOUR ADDRESS HERE
+            navigator.clipboard.writeText(wallet);
+            document.getElementById('copied').classList.remove('opacity-0');
+            setTimeout(() => document.getElementById('copied').classList.add('opacity-0'), 2000);
+        }
+
+        // Live Price Logic
+        async function getPrice() {
+            try {
+                const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
+                const data = await res.json();
+                document.getElementById('price').innerText = `$${data.solana.usd}`;
+            } catch (e) {
+                document.getElementById('price').innerText = "Syncing...";
+            }
+        }
+        setInterval(getPrice, 30000);
+        getPrice();
+    </script>
+</body>
+</html>
